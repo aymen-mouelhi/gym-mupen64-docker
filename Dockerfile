@@ -2,16 +2,13 @@ FROM ubuntu:16.04
 
 RUN apt-get update \
     && apt-get install -y libav-tools \
-    python3-numpy \
-    python3-scipy \
-    python3-setuptools \
-    python3-pip \
+    python2.7 \
+    python-pip \
     libpq-dev \
     libjpeg-dev \
     curl \
     cmake \
     swig \
-    python3-opengl \
     libboost-all-dev \
     libsdl2-dev \
     wget \
@@ -24,19 +21,23 @@ RUN apt-get update \
     libvncserver-dev \
     software-properties-common \
     mupen64plus \
+    xvfb \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+
+
 RUN ln -sf /usr/bin/pip3 /usr/local/bin/pip \
     && ln -sf /usr/bin/python3 /usr/local/bin/python \
-    && pip install -U pip
+    && pip2 install -U pip
 
 # Install gym
-RUN pip install gym==0.9.5
-RUN pip install gym[atari]
-RUN pip install six
-RUN pip install tensorflow
-RUN pip install keras
+RUN pip2 install gym==0.9.5
+RUN pip2 install gym[atari]
+RUN pip2 install six
+RUN pip2 install tensorflow
+RUN pip2 install keras
+RUN pip2 install opencv-python
 
 WORKDIR /usr/local/universe/
 
@@ -49,9 +50,8 @@ RUN mkdir mupen64plus-src && cd "$_" \
 
 # Cachebusting
 COPY ./setup.py ./
-COPY ./tox.ini ./
 
-RUN pip install -e .
+RUN pip2 install -e .
 
 # Upload our actual code
 COPY . ./

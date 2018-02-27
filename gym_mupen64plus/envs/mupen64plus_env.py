@@ -228,7 +228,7 @@ class Mupen64PlusEnv(gym.Env):
                 # (most likely due to a server already active on the display_num)
                 if xvfb_proc.poll() is None:
                     success = True
-                
+
                 print('')
 
             if not success:
